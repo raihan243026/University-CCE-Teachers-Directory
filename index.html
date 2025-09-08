@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University CCE Teachers Directory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Dark Red Theme */
+        body.dark-red-theme {
+            background-color: #4b0000;
+        }
+
+        .card {
+            background-color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .dark-red-theme .card {
+            background-color: #1f2937;
+        }
+
+        .card-title {
+            color: #1f2937;
+            transition: color 0.3s ease;
+        }
+
+        .dark-red-theme .card-title {
+            color: #f3f4f6;
+        }
+
+        .card-designation {
+            color: #3b82f6;
+            transition: color 0.3s ease;
+        }
+
+        .dark-red-theme .card-designation {
+            color: #ef4444;
+        }
+
+        .card-details {
+            color: #6b7280;
+            transition: color 0.3s ease;
+        }
+        
+        .dark-red-theme .card-details {
+            color: #d1d5db;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Header -->
+        <header class="text-center mb-8 relative">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-2 transition-colors duration-300">University Teachers Directory</h1>
+            <p class="text-sm sm:text-base text-gray-600 transition-colors duration-300">Access information about the esteemed faculty members of the CCE Department.</p>
+            
+            <!-- Theme Toggle Button -->
+            <button id="themeToggle" class="absolute top-0 right-0 p-2 rounded-full text-gray-800 dark:text-gray-100 hover:bg-gray-200 transition-colors duration-300">
+                <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                </svg>
+                <svg id="sun-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="flex justify-center mb-8">
+            <input type="text" id="searchInput" placeholder="Search by name or designation..."
+                   class="w-full max-w-2xl px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-300 dark-theme-input">
+        </div>
+
+        <!-- Teacher Cards Grid -->
+        <div id="teachersGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Cards will be dynamically inserted here by JavaScript -->
+        </div>
+
+        <!-- No Results Found -->
+        <div id="noResults" class="hidden text-center text-gray-500 mt-8 transition-colors duration-300">
+            <p class="text-xl font-medium">No teachers found matching your search.</p>
+            <p class="text-sm">Try a different name or designation.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // The following data has been updated with information from the provided XLSX file.
+        const teachers = [
+            {
+                name: "Prof. Engr. Md. Razu Ahmed",
+                shortName: "RA",
+                designation: "Chairman",
+                department: "CCE",
+                mobile: "01770164639",
+                email: "razu.ahmed@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=RA"
+            },
+            {
+                name: "Dr. Md. Saiful Islam",
+                shortName: "DMSI",
+                designation: "Professor",
+                department: "CCE",
+                mobile: "01840066254",
+                email: "saiful.islam@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=DMSI"
+            },
+            {
+                name: "Dr. Mohammad Shayeed Hossen",
+                shortName: "DMSH",
+                designation: "Associate Professor",
+                department: "CCE",
+                mobile: "0179620747",
+                email: "shayeed.hossen@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=DMSH"
+            },
+            {
+                name: "Dr. Mohammed Saifuddin",
+                shortName: "DMS",
+                designation: "Assistant Professor",
+                department: "CCE",
+                mobile: "01945767849",
+                email: "mohammed.saifuddin@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=DMS"
+            },
+            {
+                name: "Md. Aydabil",
+                shortName: "NAA",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01864792153",
+                email: "aydabil@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=NAA"
+            },
+            {
+                name: "Alaur Rahman Nadwi",
+                shortName: "ARN",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01819548093",
+                email: "nadwi@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=ARN"
+            },
+            {
+                name: "Engr. Md Jlabul Hoque",
+                shortName: "MDH",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01989685996",
+                email: "jlabul.hoque@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MDH"
+            },
+            {
+                name: "Dr. Md. Galam Haley",
+                shortName: "DMSH",
+                designation: "Assistant Professor",
+                department: "CCE",
+                mobile: "01712340602",
+                email: "galam.haley@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=DMSH"
+            },
+            {
+                name: "Amimul Ahsan",
+                shortName: "AA",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01826718889",
+                email: "amimul.ahsan@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=AA"
+            },
+            {
+                name: "Amanul Hoque",
+                shortName: "AH",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01818673657",
+                email: "amanul.hoque@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=AH"
+            },
+            {
+                name: "Dr. Azad Hossain",
+                shortName: "DAZ",
+                designation: "Professor",
+                department: "CCE",
+                mobile: "01783756981",
+                email: "azad.hossain@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=DAZ"
+            },
+            {
+                name: "Dr. MD Rafiqul Hoque",
+                shortName: "DMKH",
+                designation: "Associate Professor",
+                department: "CCE",
+                mobile: "01712827938",
+                email: "rafiqul.hoque@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=DMKH"
+            },
+            {
+                name: "Hassan Jaki",
+                shortName: "HJ",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01950853985",
+                email: "hassan.jaki@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=HJ"
+            },
+            {
+                name: "Engr. Md. Nazmus Sakib",
+                shortName: "MNS",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01717395093",
+                email: "nazmus.sakib@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MNS"
+            },
+            {
+                name: "Md. Mizanur Rahman",
+                shortName: "MMR",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01823907774",
+                email: "mizanur.rahman@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MMR"
+            },
+            {
+                name: "A.K.M. Mahfuzur Rahman",
+                shortName: "MMR",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01711718898",
+                email: "mahfuzur.rahman@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MMR"
+            },
+            {
+                name: "S.M. Ashraful Islam",
+                shortName: "SMI",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01712217621",
+                email: "ashraful.islam@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=SMI"
+            },
+            {
+                name: "Md. Abul Hossen",
+                shortName: "MAH",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01862598739",
+                email: "abul.hossen@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MAH"
+            },
+            {
+                name: "Md. Shafiul Alam",
+                shortName: "MSA",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01717208949",
+                email: "shafiul.alam@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MSA"
+            },
+            {
+                name: "Mohammad Mamunur Rashid",
+                shortName: "MMR",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01819777174",
+                email: "mamunur.rashid@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MMR"
+            },
+            {
+                name: "Md. Sadiqul Islam",
+                shortName: "MSI",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01819266782",
+                email: "sadiqul.islam@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MSI"
+            },
+            {
+                name: "Md. Sazzadur Rahman",
+                shortName: "MSR",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01718903743",
+                email: "sazzadur.rahman@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MSR"
+            },
+            {
+                name: "Md. Touhidul Islam",
+                shortName: "MTI",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01736720275",
+                email: "touhidul.islam@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MTI"
+            },
+            {
+                name: "Md. A. K. Azad",
+                shortName: "MAKA",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01711462057",
+                email: "a.k.azad@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MAKA"
+            },
+            {
+                name: "Md. Abdul Malek",
+                shortName: "MAM",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01712399925",
+                email: "abdul.malek@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MAM"
+            },
+            {
+                name: "Sohag Kumar Dey",
+                shortName: "SKD",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01717904018",
+                email: "sohag.kumar.dey@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=SKD"
+            },
+            {
+                name: "Md. Mainul Hoque",
+                shortName: "MMH",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01711283625",
+                email: "mainul.hoque@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MMH"
+            },
+            {
+                name: "Md. Alimuzzaman",
+                shortName: "MA",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01711105953",
+                email: "alimuzzaman@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=MA"
+            },
+            {
+                name: "Abu Sayeed Md. Masum",
+                shortName: "ASMM",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01812833077",
+                email: "abu.sayeed@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=ASMM"
+            },
+            {
+                name: "Fardus Akther",
+                shortName: "FA",
+                designation: "Lecturer",
+                department: "CCE",
+                mobile: "01726053359",
+                email: "fardus.akther@university.edu",
+                photo: "https://placehold.co/200x200/4a5568/ffffff?text=FA"
+            },
+        ];
+
+        const teachersGrid = document.getElementById('teachersGrid');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const moonIcon = document.getElementById('moon-icon');
+        const sunIcon = document.getElementById('sun-icon');
+        const headerText = document.querySelector('header h1');
+        const headerParagraph = document.querySelector('header p');
+
+        // Function to render teacher cards
+        function renderTeachers(filteredTeachers) {
+            teachersGrid.innerHTML = ''; // Clear the grid
+            if (filteredTeachers.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filteredTeachers.forEach(teacher => {
+                    const card = document.createElement('div');
+                    card.classList.add('card', 'rounded-xl', 'shadow-md', 'p-6', 'flex', 'flex-col', 'items-center', 'text-center', 'transform', 'transition', 'duration-300', 'hover:scale-105', 'hover:shadow-lg');
+
+                    card.innerHTML = `
+                        <img src="${teacher.photo}" alt="${teacher.name}" class="w-24 h-24 rounded-full mb-4 object-cover border-4 border-blue-500">
+                        <h2 class="card-title text-xl font-semibold">${teacher.name}</h2>
+                        <p class="card-designation font-medium">${teacher.designation}</p>
+                        <p class="card-details text-sm mt-1">${teacher.department}</p>
+                        <div class="mt-4 card-details text-sm">
+                            <p><strong>Mobile:</strong> <a href="tel:${teacher.mobile}" class="hover:text-blue-500">${teacher.mobile}</a></p>
+                            <p><strong>Email:</strong> <a href="mailto:${teacher.email}" class="hover:text-blue-500">${teacher.email}</a></p>
+                        </div>
+                    `;
+                    teachersGrid.appendChild(card);
+                });
+            }
+        }
+
+        // Function to filter teachers based on search input
+        function filterTeachers() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredTeachers = teachers.filter(teacher =>
+                teacher.name.toLowerCase().includes(searchTerm) ||
+                teacher.designation.toLowerCase().includes(searchTerm)
+            );
+            renderTeachers(filteredTeachers);
+        }
+
+        // Theme toggle functionality
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-red-theme');
+            
+            // Toggle icons
+            if (body.classList.contains('dark-red-theme')) {
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+                headerText.classList.remove('text-gray-800');
+                headerText.classList.add('text-gray-100');
+                headerParagraph.classList.remove('text-gray-600');
+                headerParagraph.classList.add('text-gray-400');
+                searchInput.classList.add('bg-gray-700', 'text-white', 'border-gray-600');
+                noResults.classList.remove('text-gray-500');
+                noResults.classList.add('text-gray-400');
+            } else {
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+                headerText.classList.remove('text-gray-100');
+                headerText.classList.add('text-gray-800');
+                headerParagraph.classList.remove('text-gray-400');
+                headerParagraph.classList.add('text-gray-600');
+                searchInput.classList.remove('bg-gray-700', 'text-white', 'border-gray-600');
+                noResults.classList.remove('text-gray-400');
+                noResults.classList.add('text-gray-500');
+            }
+        });
+
+        // Initial render
+        renderTeachers(teachers);
+
+        // Add event listener to search input
+        searchInput.addEventListener('input', filterTeachers);
+    </script>
+</body>
+</html>
