@@ -478,6 +478,31 @@
         </div>
     </div>
 
+    <!-- Sotti Exit korar Jonno Sundor Custom Modal (Bangla Latin Language element) -->
+    <div id="exitConfirmModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+        <div class="bg-white dark:bg-slate-900 border-2 border-red-500/30 rounded-3xl p-6 w-full max-w-md shadow-2xl transition-all transform scale-95" id="exitModalContent">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-100 dark:bg-red-950/50 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                    <i class="fa-solid fa-circle-exclamation text-3xl animate-bounce"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-gray-900 dark:text-white mb-2">
+                    Apni ki sotti ber hote chan?
+                </h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+                    Apni ekhon home page-e achen. Back press korle application theke exit hoye jaben. Apni ki sotti application theke ber hote chan?
+                </p>
+                <div class="flex gap-3 justify-center">
+                    <button onclick="closeExitModal()" class="flex-1 py-3 px-4 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-200 transition-all">
+                        Na, Thaki
+                    </button>
+                    <button onclick="confirmExitApp()" class="flex-1 py-3 px-4 rounded-xl text-xs font-bold bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/30 transition-all">
+                        Haa, Exit Kori
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Floating Utility Navigation Actions (Top / Bottom Scroller & Theme Selector) -->
     <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-40">
         <!-- Floating Scroll to Top Button -->
@@ -560,6 +585,10 @@
         let currentFilter = 'all';
         let searchQuery = '';
         let favoritesList = JSON.parse(localStorage.getItem('cce_favorites')) || [];
+        
+        // Dynamic navigation state buffer tracker
+        let activeModal = null; // 'detail', 'theme', or null
+        let activeTeacherId = null;
 
         // Element Bindings
         const grid = document.getElementById('teachersGrid');
@@ -664,6 +693,66 @@
             AOS.refresh();
         }
 
+        // BACK-BUTTON HISTORY ENGINE & SPA ROUTING
+        // SPA state history trace block runtime management system (Latin Bangla commands helper)
+        function initHistorySystem() {
+            // Sobaar prothome browser history context initialize kori
+            window.history.replaceState({ isExitMarker: true }, "");
+            window.history.pushState({ filter: 'all', modal: null, teacherId: null }, "");
+        }
+
+        // State changes pipeline sync trigger
+        function pushNavigationState() {
+            window.history.pushState({
+                filter: currentFilter,
+                modal: activeModal,
+                teacherId: activeTeacherId
+            }, "");
+        }
+
+        // Dynamic State restoration event hook
+        window.addEventListener('popstate', (event) => {
+            const state = event.state;
+            
+            // Jodi marker point state trigger hoy, tar mane user exit korte chaiche
+            if (!state || state.isExitMarker) {
+                // Buffer state load back, jate page direct bondho na hoye modal dekhaye
+                window.history.pushState({
+                    filter: currentFilter,
+                    modal: activeModal,
+                    teacherId: activeTeacherId
+                }, "");
+                openExitModal();
+                return;
+            }
+
+            // Normal dynamic navigation sync trace back
+            applyInternalState(state);
+        });
+
+        // State apply mechanics engine
+        function applyInternalState(state) {
+            // Apply category filter state
+            if (state.filter && state.filter !== currentFilter) {
+                applyFilterAction(state.filter);
+            }
+
+            // Handle open modals state back loop
+            if (state.modal === 'detail' && state.teacherId) {
+                activeModal = 'detail';
+                activeTeacherId = state.teacherId;
+                openDetailModalDom(state.teacherId);
+            } else if (state.modal === 'theme') {
+                activeModal = 'theme';
+                openThemeModalDom();
+            } else {
+                // Close all existing modals
+                activeModal = null;
+                activeTeacherId = null;
+                closeAllModalsDom();
+            }
+        }
+
         // Theme toggler and background generator engine
         function setTheme(themeName) {
             document.body.className = `theme-${themeName}`;
@@ -692,7 +781,7 @@
         }
 
         // Handle Quick category filters changes
-        function filterCategory(cat) {
+        function applyFilterAction(cat) {
             currentFilter = cat;
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300";
@@ -706,6 +795,11 @@
                 else if (cat === 'Favorites') activeBtn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-amber-500 text-white";
             }
             render();
+        }
+
+        function filterCategory(cat) {
+            applyFilterAction(cat);
+            pushNavigationState();
         }
 
         // Dynamic Favorite (Starring) Logic
@@ -818,8 +912,8 @@
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
-        // Inspect individual teachers profiles details dynamically
-        function inspectTeacherDetails(id) {
+        // Detail Modal Active Rendering Action
+        function openDetailModalDom(id) {
             const t = facultyData.find(item => item.id === id);
             if (!t) return;
 
@@ -912,14 +1006,102 @@
             }, 10);
         }
 
+        // Trigger opening detailed modal safely
+        function inspectTeacherDetails(id) {
+            activeModal = 'detail';
+            activeTeacherId = id;
+            openDetailModalDom(id);
+            pushNavigationState();
+        }
+
         // Close details modal smoothly
         function closeDetailModal() {
+            closeDetailModalAction();
+        }
+
+        function closeDetailModalAction() {
             const modal = document.getElementById('detailModal');
             const content = document.getElementById('detailModalContent');
             content.classList.add('scale-95');
             setTimeout(() => {
                 modal.classList.add('hidden');
+                activeModal = null;
+                activeTeacherId = null;
+                pushNavigationState();
             }, 150);
+        }
+
+        // Open Theme Selector Modal Mechanics
+        function openThemeModalDom() {
+            const modal = document.getElementById('themeModal');
+            const content = document.getElementById('themeModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function openThemeModal() {
+            activeModal = 'theme';
+            openThemeModalDom();
+            pushNavigationState();
+        }
+
+        function closeThemeModal() {
+            const modal = document.getElementById('themeModal');
+            const content = document.getElementById('themeModalContent');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                activeModal = null;
+                pushNavigationState();
+            }, 150);
+        }
+
+        // Close All active modals
+        function closeAllModalsDom() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.getElementById('themeModal').classList.add('hidden');
+            document.getElementById('exitConfirmModal').classList.add('hidden');
+        }
+
+        // APP EXIT MODAL CONTROLS (Latin Bangla content elements helper)
+        function openExitModal() {
+            const modal = document.getElementById('exitConfirmModal');
+            const content = document.getElementById('exitModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeExitModal() {
+            const modal = document.getElementById('exitConfirmModal');
+            const content = document.getElementById('exitModalContent');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150);
+        }
+
+        function confirmExitApp() {
+            // Screen simulation for exit success
+            const container = document.getElementById('exitModalContent');
+            container.innerHTML = `
+                <div class="text-center py-4">
+                    <i class="fa-solid fa-face-smile text-amber-500 text-5xl mb-3 animate-pulse"></i>
+                    <h3 class="text-lg font-bold">Allah Hafez!</h3>
+                    <p class="text-xs opacity-75 mt-1">CCE Teacher Hub theke successfully ber hoye gechen.</p>
+                </div>
+            `;
+            setTimeout(() => {
+                // Programmatic exit trigger back routing
+                window.close();
+                // Back option secondary trigger fallback
+                window.history.back();
+            }, 1500);
         }
 
         // vCard generator script dynamically generating raw VCF content and serving as direct download anchor
@@ -1011,26 +1193,6 @@
             filterCategory('all');
         }
 
-        // Theme selector modal controls
-        function openThemeModal() {
-            const modal = document.getElementById('themeModal');
-            const content = document.getElementById('themeModalContent');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeThemeModal() {
-            const modal = document.getElementById('themeModal');
-            const content = document.getElementById('themeModalContent');
-            content.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 150);
-        }
-
         // Mobile specific overlay toggles
         function toggleMobileSearch() {
             const panel = document.getElementById('mobileSearchPanel');
@@ -1058,8 +1220,10 @@
         window.addEventListener('click', (e) => {
             const themeModal = document.getElementById('themeModal');
             const detailModal = document.getElementById('detailModal');
+            const exitConfirmModal = document.getElementById('exitConfirmModal');
             if (e.target === themeModal) closeThemeModal();
-            if (e.target === detailModal) closeDetailModal();
+            if (e.target === detailModal) closeDetailModalAction();
+            if (e.target === exitConfirmModal) closeExitModal();
         });
 
         // Initialize Application lifecycle hooks
@@ -1090,6 +1254,9 @@
             setInterval(updateClock, 1000);
             updateClock();
             buildMiniCalendar();
+
+            // Run back navigation history stack setup
+            initHistorySystem();
 
             // Setup welcome text greetings logic
             const currentHour = new Date().getHours();
