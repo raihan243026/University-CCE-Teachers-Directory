@@ -3,237 +3,1101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University CCE Teachers Directory</title>
+    <title>University CCE Teachers Directory & Dashboard</title>
+    
+    <!-- External Dependencies -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS (Animate on Scroll) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
-        
-        /* Theme Definitions */
-        .theme-white { --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --subtext: #4b5563; --accent: #2563eb; --border: #e5e7eb; }
-        .theme-dark-red { --bg: #450a0a; --card: #7f1d1d; --text: #fef2f2; --subtext: #fca5a5; --accent: #f87171; --border: #991b1b; }
-        .theme-dark-black { --bg: #0a0a0a; --card: #171717; --text: #ededed; --subtext: #a3a3a3; --accent: #3b82f6; --border: #262626; }
-
-        body { background-color: var(--bg); color: var(--text); }
-        .card { background-color: var(--card); border: 1px solid var(--border); }
-        .nav-bg { background-color: var(--card); border-bottom: 1px solid var(--border); }
-        .accent-text { color: var(--accent); }
-        .sub-text { color: var(--subtext); }
-        
-        .sticky-nav { position: sticky; top: 0; z-index: 50; }
-        
-        .search-input {
-            background-color: var(--bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-        
-        .search-input:focus {
-            ring: 2px solid var(--accent);
-            outline: none;
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            --card-bg: rgba(255, 255, 255, 1);
+            --card-hover-bg: rgba(255, 255, 255, 1);
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --accent-primary: #2563eb;
+            --accent-secondary: #1d4ed8;
+            --border-color: rgba(229, 231, 235, 1);
+            --glass-blur: 0px;
+            --shadow-intensity: rgba(0, 0, 0, 0.05);
+            --badge-regular: #3b82f6;
+            --badge-adjunct: #8b5cf6;
         }
 
-        .category-badge {
-            background-color: var(--accent);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            font-weight: bold;
+        .theme-white {
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: #ffffff;
+            --card-hover-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #1d4ed8;
+            --border-color: #e2e8f0;
+            --glass-blur: 0px;
+            --shadow-intensity: rgba(15, 23, 42, 0.06);
+            --badge-regular: #3b82f6;
+            --badge-adjunct: #8b5cf6;
+        }
+
+        .theme-dark-red {
+            --bg-gradient: linear-gradient(135deg, #2d0606 0%, #1c0303 100%);
+            --card-bg: #4c0519;
+            --card-hover-bg: #5c0620;
+            --text-main: #ffe4e6;
+            --text-muted: #fca5a5;
+            --accent-primary: #f43f5e;
+            --accent-secondary: #e11d48;
+            --border-color: #9f1239;
+            --glass-blur: 0px;
+            --shadow-intensity: rgba(0, 0, 0, 0.5);
+            --badge-regular: #f43f5e;
+            --badge-adjunct: #d946ef;
+        }
+
+        .theme-dark-black {
+            --bg-gradient: linear-gradient(135deg, #090d16 0%, #020617 100%);
+            --card-bg: #1e293b;
+            --card-hover-bg: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #0284c7;
+            --border-color: #334155;
+            --glass-blur: 0px;
+            --shadow-intensity: rgba(0, 0, 0, 0.6);
+            --badge-regular: #38bdf8;
+            --badge-adjunct: #a855f7;
+        }
+
+        .theme-classic-green {
+            --bg-gradient: linear-gradient(135deg, #022c22 0%, #011c15 100%);
+            --card-bg: #064e3b;
+            --card-hover-bg: #065f46;
+            --text-main: #ecfdf5;
+            --text-muted: #a7f3d0;
+            --accent-primary: #10b981;
+            --accent-secondary: #059669;
+            --border-color: #065f46;
+            --glass-blur: 0px;
+            --shadow-intensity: rgba(0, 0, 0, 0.4);
+            --badge-regular: #10b981;
+            --badge-adjunct: #14b8a6;
+        }
+
+        .theme-glass-liquid {
+            --bg-gradient: linear-gradient(225deg, #1e1b4b 0%, #311042 50%, #0f172a 100%);
+            --card-bg: rgba(255, 255, 255, 0.07);
+            --card-hover-bg: rgba(255, 255, 255, 0.12);
+            --text-main: #ffffff;
+            --text-muted: #cbd5e1;
+            --accent-primary: #ec4899;
+            --accent-secondary: #8b5cf6;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --glass-blur: 16px;
+            --shadow-intensity: rgba(0, 0, 0, 0.4);
+            --badge-regular: #ec4899;
+            --badge-adjunct: #8b5cf6;
+        }
+
+        /* Base CSS Layout bindings */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            transition: background 0.5s ease, color 0.3s ease;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Animated Glow for Glass Theme */
+        .liquid-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, rgba(139,92,246,0.15) 50%, rgba(0,0,0,0) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
+            animation: floatGlow 12s infinite alternate ease-in-out;
+        }
+        
+        .liquid-glow-2 {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, rgba(59,130,246,0.15) 50%, rgba(0,0,0,0) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(50px);
+            animation: floatGlow2 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(10vw, 10vh) scale(1); }
+            100% { transform: translate(60vw, 40vh) scale(1.3); }
+        }
+
+        @keyframes floatGlow2 {
+            0% { transform: translate(70vw, 70vh) scale(1.2); }
+            100% { transform: translate(20vw, 20vh) scale(0.8); }
+        }
+
+        /* Glassmorphism utility card */
+        .custom-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            box-shadow: 0 10px 30px -10px var(--shadow-intensity);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .custom-card:hover {
+            background: var(--card-hover-bg);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px -5px var(--shadow-intensity);
+            border-color: var(--accent-primary);
+        }
+
+        /* Custom Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 999px;
+            opacity: 0.7;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Navbar transitions */
+        .smart-navbar {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, backdrop-filter 0.3s;
+        }
+
+        /* Clock Font style */
+        .mono-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Glassmorphism buttons */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+        }
+        .glass-btn:hover {
+            background: var(--accent-primary);
+            color: #fff;
+            border-color: var(--accent-primary);
         }
     </style>
 </head>
 <body class="theme-white">
 
-    <!-- Navigation Bar -->
-    <nav class="nav-bg sticky-nav px-4 py-3 shadow-sm">
-        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-2">
-                <div class="bg-blue-600 p-2 rounded-lg">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+    <!-- Ambient glows for liquid/glass experience -->
+    <div id="ambientGlows" class="hidden absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="liquid-glow"></div>
+        <div class="liquid-glow-2"></div>
+    </div>
+
+    <!-- Smart Sticky Navbar -->
+    <nav id="smartNav" class="smart-navbar fixed top-0 left-0 right-0 z-50 px-4 py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- Logo Section -->
+            <div class="flex items-center justify-between w-full md:w-auto">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight block">IIUC CCE</span>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-blue-500 block -mt-1">Faculty Hub</span>
+                    </div>
                 </div>
-                <span class="text-xl font-bold tracking-tight">CCE Teachers Directory</span>
+                
+                <!-- Quick Mobile Icons -->
+                <div class="flex items-center gap-2 md:hidden">
+                    <button onclick="toggleMobileSearch()" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button onclick="openThemeModal()" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700">
+                        <i class="fa-solid fa-palette"></i>
+                    </button>
+                </div>
             </div>
 
-            <!-- Search Area -->
-            <div class="relative w-full max-w-md">
-                <input type="text" id="searchInput" placeholder="Search name, designation, or short name..." 
-                       class="search-input w-full pl-10 pr-4 py-2 rounded-full text-sm">
-                <svg class="w-5 h-5 absolute left-3 top-2.5 sub-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <!-- Integrated Fast Search Input -->
+            <div id="searchWrapper" class="relative w-full max-w-lg hidden md:block">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                </span>
+                <input type="text" id="searchInput" placeholder="Search name, designation, room, initial or tags..." 
+                       class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm font-medium">
+                <button onclick="clearSearch()" id="clearSearchBtn" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 hidden">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
             </div>
 
-            <!-- Theme Toggle -->
-            <button id="themeToggle" class="p-2 rounded-full hover:bg-opacity-20 hover:bg-gray-500 transition-all flex items-center gap-2 border border-gray-400 border-opacity-30">
-                <span id="themeLabel" class="text-xs font-medium uppercase hidden sm:inline">Theme</span>
-                <svg id="themeIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path id="iconPath" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                </svg>
-            </button>
+            <!-- Header Utilities Panel -->
+            <div class="hidden md:flex items-center gap-4">
+                <!-- Theme Controller Trigger -->
+                <button onclick="openThemeModal()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold glass-btn border shadow-sm">
+                    <i class="fa-solid fa-palette text-blue-500"></i>
+                    <span>Theme</span>
+                </button>
+
+                <!-- Stat Summary Bubble -->
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-slate-800 rounded-xl text-xs font-semibold">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="quickCount">0 Teachers</span>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <main class="container mx-auto p-4 md:p-8">
-        <div class="mb-10 text-center">
-            <h2 class="text-3xl font-extrabold mb-2">Department Faculty</h2>
-            <div class="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
+    <!-- Dashboard Hero Section -->
+    <main class="max-w-7xl mx-auto px-4 pt-28 pb-20 relative z-10">
+        
+        <!-- Welcome banner with live widget framework -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10" data-aos="fade-down">
+            
+            <!-- Left Banner: Greeting & Department Information -->
+            <div class="lg:col-span-2 custom-card rounded-3xl p-6 md:p-8 flex flex-col justify-between overflow-hidden relative min-h-[220px]">
+                <div class="absolute right-0 bottom-0 translate-x-4 translate-y-4 opacity-10 pointer-events-none text-9xl font-extrabold select-none">
+                    CCE
+                </div>
+                <div>
+                    <span id="greetingText" class="text-xs font-bold uppercase tracking-widest text-blue-500 mb-2 block">WELCOME BACK</span>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">Computer Science & Communication Engineering</h1>
+                    <p class="text-sm opacity-80 max-w-xl">
+                        Comprehensive teacher directory for academic planning, consulting sessions, direct dial calls, and instant profile management.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4 mt-6 items-center">
+                    <div class="px-4 py-2 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-xs font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-user-tie text-blue-500"></i>
+                        <span id="totalStatsText">-- Loading --</span>
+                    </div>
+                    <div class="px-4 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-emerald-500"></i>
+                        <span id="regStatsText">-- Loading --</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Banner: Dynamic Interactive Widget Box (Time, Date & Mini Calendar) -->
+            <div class="custom-card rounded-3xl p-6 flex flex-col justify-between">
+                <!-- Clock and Calendar switch tabs -->
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-bold tracking-widest text-blue-500 uppercase flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        Live Tracker
+                    </span>
+                    <span id="widgetDateStr" class="text-xs font-medium opacity-75"></span>
+                </div>
+
+                <!-- Digital Time Output Area -->
+                <div class="flex items-baseline gap-2 py-2">
+                    <span id="clockHours" class="text-5xl font-black tracking-tight mono-font">12</span>
+                    <span id="clockSeparator" class="text-4xl font-black text-blue-500 animate-pulse">:</span>
+                    <span id="clockMinutes" class="text-5xl font-black tracking-tight mono-font">00</span>
+                    <span id="clockSeconds" class="text-2xl font-bold opacity-60 ml-1 mono-font">00</span>
+                    <span id="clockAmPm" class="text-xl font-extrabold ml-1 uppercase text-blue-500">AM</span>
+                </div>
+
+                <!-- Toggle Mini Calendar section -->
+                <div class="border-t border-gray-200/20 pt-4 mt-4">
+                    <div class="flex items-center justify-between text-xs font-bold mb-2">
+                        <span>Mini Desk Calendar</span>
+                        <span id="calMonthYear" class="text-blue-500">June 2026</span>
+                    </div>
+                    <!-- Calendar Grid -->
+                    <div class="grid grid-cols-7 gap-1 text-center text-[10px]" id="miniCalendarGrid">
+                        <!-- Headings -->
+                        <span class="font-extrabold opacity-60">S</span>
+                        <span class="font-extrabold opacity-60">M</span>
+                        <span class="font-extrabold opacity-60">T</span>
+                        <span class="font-extrabold opacity-60">W</span>
+                        <span class="font-extrabold opacity-60">T</span>
+                        <span class="font-extrabold opacity-60">F</span>
+                        <span class="font-extrabold opacity-60">S</span>
+                        <!-- Dynamic dates injected by script -->
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Category Filters -->
-        <div class="flex flex-wrap justify-center gap-2 mb-8">
-            <button onclick="filterCategory('all')" class="category-btn active px-4 py-1.5 rounded-full bg-blue-600 text-white text-sm font-medium transition">All</button>
-            <button onclick="filterCategory('Regular')" class="category-btn px-4 py-1.5 rounded-full border border-gray-400 border-opacity-30 text-sm font-medium transition">Regular</button>
-            <button onclick="filterCategory('Adjunct')" class="category-btn px-4 py-1.5 rounded-full border border-gray-400 border-opacity-30 text-sm font-medium transition">Adjunct</button>
+        <!-- Controls Hub: Category filters, Fast search tags and Favorites toggle -->
+        <div class="custom-card rounded-2xl p-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-4" data-aos="fade-up">
+            
+            <!-- Main categories selectors -->
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <button onclick="filterCategory('all')" id="btn-all" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-blue-600 text-white">
+                    <i class="fa-solid fa-users mr-1.5"></i>All Faculty
+                </button>
+                <button onclick="filterCategory('Regular')" id="btn-Regular" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300">
+                    <i class="fa-solid fa-graduation-cap mr-1.5 text-blue-500"></i>Regular
+                </button>
+                <button onclick="filterCategory('Adjunct')" id="btn-Adjunct" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300">
+                    <i class="fa-solid fa-network-wired mr-1.5 text-purple-500"></i>Adjunct
+                </button>
+                <button onclick="filterCategory('Favorites')" id="btn-Favorites" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300">
+                    <i class="fa-solid fa-star mr-1.5 text-yellow-500"></i>My Bookmarks (<span id="bookmarkCount">0</span>)
+                </button>
+            </div>
+
+            <!-- Extra actions panel (Dynamic PDF download/Data extraction mock) -->
+            <div class="flex items-center gap-2 justify-end w-full md:w-auto">
+                <button onclick="downloadAllContacts()" class="px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-emerald-500 text-xs font-bold flex items-center gap-1.5 transition-all">
+                    <i class="fa-solid fa-address-book"></i> Export vCard
+                </button>
+                <button onclick="exportCSV()" class="px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500 hover:text-white border border-amber-500/20 text-amber-500 text-xs font-bold flex items-center gap-1.5 transition-all">
+                    <i class="fa-solid fa-file-csv"></i> Save CSV
+                </button>
+            </div>
         </div>
 
+        <!-- Main Faculty Directory Grid -->
         <div id="teachersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Cards populated by JS -->
+            <!-- Dynamic Cards Injected via Javascript Renderer -->
         </div>
 
-        <div id="noResults" class="hidden text-center py-20">
-            <svg class="mx-auto h-12 w-12 sub-text mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <h3 class="text-xl font-semibold">No matches found</h3>
-            <p class="sub-text">Try adjusting your search or filters.</p>
+        <!-- No Results Warning Card -->
+        <div id="noResults" class="hidden text-center py-20 custom-card rounded-3xl" data-aos="fade-up">
+            <svg class="mx-auto h-16 w-16 text-yellow-500 mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="text-2xl font-black tracking-tight mb-1">No faculty matches found</h3>
+            <p class="text-sm opacity-70 max-w-md mx-auto">No results were returned for your filter criteria or search query. Try adjusting your tags, or search query parameters.</p>
+            <button onclick="resetFilters()" class="mt-6 px-5 py-2 rounded-xl bg-blue-500 text-white text-xs font-bold shadow-md hover:bg-blue-600 transition-all">
+                Reset All Filters
+            </button>
         </div>
+
     </main>
 
-    <script>
-        const facultyData = [
-            // Regular Faculty
-            { name: "Prof. Engr. Md. Razu Ahmed", designation: "Chairman", short: "RA", mobile: "01874543665", type: "Regular" },
-            { name: "Dr. Mohammed Saifuddin", designation: "Assistant Professor", short: "DMS", mobile: "01945167849", type: "Regular" },
-            { name: "Engr. MD Jiabul Hoque", designation: "Assistant Professor", short: "MJH", mobile: "01989685996", type: "Regular" },
-            { name: "Mr Amanul Hoque", designation: "Lecturer", short: "AH", mobile: "01818673657", type: "Regular" },
-            { name: "Ms Tania Sultana", designation: "Lecturer", short: "TS", mobile: "01515284723", type: "Regular" },
-            { name: "Engr. Hassan Jaki", designation: "Lecturer", short: "HJ", mobile: "01825362202", type: "Regular" },
-            { name: "Ms Jannatul Naima", designation: "Lecturer", short: "JN", mobile: "01624924499", type: "Regular" },
-            { name: "Md. Hasan Mia", designation: "Lecturer", short: "HM", mobile: "01787917221", type: "Regular" },
-            { name: "Mr Mirza Raquib", designation: "Lecturer", short: "MR", mobile: "01319034382", type: "Regular" },
-            { name: "Atia Jahan", designation: "Lecturer", short: "AJ", mobile: "01400388302", type: "Regular" },
-            { name: "Md Nurnobi Chowdhury Saddam", designation: "Lecturer", short: "NCS", mobile: "01558268715", type: "Regular" },
-            { name: "Mr Abdullah Al Masud", designation: "Lecturer", short: "AAM", mobile: "01719801221", type: "Regular" },
-            { name: "Md. Imam Uddin Forkan", designation: "Lecturer", short: "IUF", mobile: "01521536448", type: "Regular" },
+    <!-- Modern Theme Selection Modal -->
+    <div id="themeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-md shadow-2xl transition-all transform scale-95" id="themeModalContent">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-100 dark:border-slate-800 pb-3">
+                <h3 class="text-lg font-extrabold flex items-center gap-2">
+                    <i class="fa-solid fa-palette text-blue-500"></i> Select Interface Style
+                </h3>
+                <button onclick="closeThemeModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <p class="text-xs opacity-75 mb-4">Choose a visually optimized theme built to enhance code readability and layout contrast.</p>
+            
+            <div class="space-y-3">
+                <!-- Theme Option: White -->
+                <button onclick="setTheme('white')" class="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 text-left transition-all">
+                    <div class="flex items-center gap-3">
+                        <span class="w-5 h-5 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center"><i class="fa-solid fa-sun text-xs text-amber-500"></i></span>
+                        <span class="text-sm font-bold">Classic White / Light</span>
+                    </div>
+                    <i class="fa-solid fa-check text-blue-500 hidden" id="check-white"></i>
+                </button>
 
-            // Adjunct Faculty
-            { name: "Dr. Md. Azad Hossain", designation: "Professor, ETE, CUET", short: "DMAH", mobile: "01783756981", type: "Adjunct" },
-            { name: "Dr. Md. Jahedul Islam", designation: "Professor, ETE, CUET", short: "DMJI", mobile: "01792451681", type: "Adjunct" },
-            { name: "Dr. Md. Golam Hafez", designation: "Professor, Mathematics, CUET", short: "DMGH", mobile: "01712340602", type: "Adjunct" },
-            { name: "Dr. Md. Saiful Islam", designation: "Associate Professor, ETE, CUET", short: "DMSI", mobile: "01840066254", type: "Adjunct" },
-            { name: "Md. Kamal Hossen", designation: "Associate Professor, CSE, CUET", short: "MKH", mobile: "01816012649", type: "Adjunct" },
-            { name: "Md. Shahidul Hoque", designation: "Associate Professor, CU", short: "MSH", mobile: "01818921964", type: "Adjunct" },
-            { name: "Md Riyad Hossain", designation: "Lecturer, EEE, UCTC", short: "MRH", mobile: "01631187291", type: "Adjunct" },
-            { name: "Md. Ayubali", designation: "Adjunct Faculty, CCE, IIUC", short: "MA", mobile: "01864792153", type: "Adjunct" },
-            { name: "Mr. Syed Mainul Islam", designation: "Adjunct Faculty, CCE, IIUC", short: "SMI", mobile: "01521488497", type: "Adjunct" },
-            { name: "Mohammad Istiak Khan", designation: "Adjunct Faculty, CCE, IIUC", short: "MIK", mobile: "01625142108", type: "Adjunct" },
-            { name: "Md. Warid Bin Azad", designation: "Adjunct Faculty, CCE, IIUC", short: "MWBA", mobile: "01671911645", type: "Adjunct" },
-            { name: "Mr. Abu Noman Siddike", designation: "Adjunct Faculty, CCE, IIUC", short: "ANS", mobile: "01741270048", type: "Adjunct" },
-            { name: "Abu Raihan Anchari Miskat", designation: "Adjunct Faculty, CCE, IIUC", short: "ARAM", mobile: "01871582887", type: "Adjunct" },
-            { name: "Zia Uddin Ahmed", designation: "Adjunct Faculty, CCE, IIUC", short: "ZUA", mobile: "01670502610", type: "Adjunct" },
-            { name: "Md Abu Bakar Siddiq Sayem", designation: "Adjunct Faculty, CCE, IIUC", short: "MABSS", mobile: "01825507837", type: "Adjunct" },
-            { name: "Arafat Al Fahim", designation: "Adjunct Faculty, CCE, IIUC", short: "AAF", mobile: "01866695182", type: "Adjunct" },
-            { name: "Md Hasan Shorif", designation: "Adjunct Faculty, CCE, IIUC", short: "MHS", mobile: "01858562734", type: "Adjunct" },
-            { name: "Afif Hossain Irfan", designation: "Adjunct Faculty, CCE, IIUC", short: "AHI", mobile: "01521536082", type: "Adjunct" },
-            { name: "Mohammad Afjalur Rahman", designation: "Adjunct Faculty, CCE, IIUC", short: "MAR", mobile: "01716742661", type: "Adjunct" },
-            { name: "Md. Ziaul Hoque", designation: "Adjunct Faculty, CCE, IIUC", short: "MZH", mobile: "01518602747", type: "Adjunct" },
-            { name: "Md Mahmudul Arif", designation: "Adjunct Faculty, CCE, IIUC", short: "MMA", mobile: "01789077979", type: "Adjunct" },
-            { name: "MD. Ali Akbar", designation: "Lecturer, CSE, GAM", short: "MAA", mobile: "01791138588", type: "Adjunct" },
-            { name: "Abu Monsur Mohammad Fahim", designation: "Software Engineering", short: "AMMF", mobile: "01821569161", type: "Adjunct" },
-            { name: "Md. Ismail", designation: "Adjunct Faculty, CSE, IIUC", short: "MI", mobile: "01690068050", type: "Adjunct" },
-            { name: "Farhana Ahmmed", designation: "Adjunct Faculty, CCE, IIUC", short: "FA", mobile: "01839304202", type: "Adjunct" }
+                <!-- Theme Option: Dark Red -->
+                <button onclick="setTheme('dark-red')" class="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 text-left transition-all">
+                    <div class="flex items-center gap-3">
+                        <span class="w-5 h-5 rounded-full bg-rose-950 border border-rose-800 flex items-center justify-center"><i class="fa-solid fa-moon text-xs text-rose-500"></i></span>
+                        <span class="text-sm font-bold text-rose-800 dark:text-rose-400">Crimson Dark</span>
+                    </div>
+                    <i class="fa-solid fa-check text-blue-500 hidden" id="check-dark-red"></i>
+                </button>
+
+                <!-- Theme Option: Dark Black -->
+                <button onclick="setTheme('dark-black')" class="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 text-left transition-all">
+                    <div class="flex items-center gap-3">
+                        <span class="w-5 h-5 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center"><i class="fa-solid fa-circle text-xs text-blue-400"></i></span>
+                        <span class="text-sm font-bold text-slate-800 dark:text-slate-300">Midnight Charcoal</span>
+                    </div>
+                    <i class="fa-solid fa-check text-blue-500 hidden" id="check-dark-black"></i>
+                </button>
+
+                <!-- Theme Option: Classic Green -->
+                <button onclick="setTheme('classic-green')" class="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 text-left transition-all">
+                    <div class="flex items-center gap-3">
+                        <span class="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-800 flex items-center justify-center"><i class="fa-solid fa-leaf text-xs text-emerald-400"></i></span>
+                        <span class="text-sm font-bold text-emerald-800 dark:text-emerald-400">Forest Emerald</span>
+                    </div>
+                    <i class="fa-solid fa-check text-blue-500 hidden" id="check-classic-green"></i>
+                </button>
+
+                <!-- Theme Option: Glass / Liquid Theme -->
+                <button onclick="setTheme('glass-liquid')" class="w-full flex items-center justify-between p-3.5 rounded-xl border border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 text-left transition-all">
+                    <div class="flex items-center gap-3">
+                        <span class="w-5 h-5 rounded-full bg-gradient-to-tr from-pink-500 to-violet-500 border border-pink-400 flex items-center justify-center"><i class="fa-solid fa-glass-water text-xs text-white"></i></span>
+                        <span class="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">Frosted Glass Theme</span>
+                    </div>
+                    <i class="fa-solid fa-check text-blue-500 hidden" id="check-glass-liquid"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Teacher Profiling Card Modal -->
+    <div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md hidden">
+        <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-2xl shadow-2xl transition-all transform scale-95 overflow-hidden relative max-h-[90vh] overflow-y-auto" id="detailModalContent">
+            
+            <div class="absolute right-4 top-4">
+                <button onclick="closeDetailModal()" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-gray-500">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="modalDetailsPlaceholder">
+                <!-- Data populated dynamically in script -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Utility Navigation Actions (Top / Bottom Scroller & Theme Selector) -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-40">
+        <!-- Floating Scroll to Top Button -->
+        <button onclick="scrollToTop()" id="scrollTopBtn" class="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-xl transition-all duration-300 opacity-0 pointer-events-none hover:scale-110">
+            <i class="fa-solid fa-arrow-up text-lg"></i>
+        </button>
+
+        <!-- Floating Scroll to Bottom Button -->
+        <button onclick="scrollToBottom()" id="scrollBottomBtn" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110">
+            <i class="fa-solid fa-arrow-down text-lg"></i>
+        </button>
+    </div>
+
+    <!-- Floating Global Toast Notifications Panel -->
+    <div id="toastContainer" class="fixed bottom-4 left-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none">
+        <!-- Injected via Toast JS helper -->
+    </div>
+
+    <!-- Mobile Sticky Search Header Module -->
+    <div id="mobileSearchPanel" class="fixed top-14 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 p-3 shadow-md hidden">
+        <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                <i class="fa-solid fa-magnifying-glass text-sm"></i>
+            </span>
+            <input type="text" id="searchInputMobile" placeholder="Type to search..." 
+                   class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm font-medium">
+        </div>
+    </div>
+
+    <!-- Script Module Section containing AOS, logic implementation, directory controls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Faculty Directory Extended Database Array
+        const facultyData = [
+            // Regular Faculty members with highly rich attributes
+            { id: "ra", name: "Prof. Engr. Md. Razu Ahmed", designation: "Chairman & Professor", short: "RA", mobile: "01874543665", email: "razu.ahmed@iiuc.ac.bd", room: "Room 401, CCE Academic Building 3", type: "Regular", status: "Active", experience: "15 Years", subjects: ["Digital Signal Processing", "Microprocessor Systems"], desc: "Specializes in digital signal filtering and Embedded Systems logic structures design." },
+            { id: "dms", name: "Dr. Mohammed Saifuddin", designation: "Assistant Professor", short: "DMS", mobile: "01945167849", email: "saifuddin@iiuc.ac.bd", room: "Room 402, CCE Academic Building 3", type: "Regular", status: "In Consultation", experience: "10 Years", subjects: ["Wireless Networks", "Optical Fiber Communications"], desc: "Research focuses on photonics structures, laser telemetry transmissions, and wide wavelength optical communications." },
+            { id: "mjh", name: "Engr. MD Jiabul Hoque", designation: "Assistant Professor", short: "MJH", mobile: "01989685996", email: "mjh@iiuc.ac.bd", room: "Room 403, CCE Academic Building 3", type: "Regular", status: "Away", experience: "8 Years", subjects: ["Electromagnetics", "Radar Engineering", "Antenna Design"], desc: "Pioneer researcher in antenna array systems modeling." },
+            { id: "ah", name: "Mr Amanul Hoque", designation: "Lecturer", short: "AH", mobile: "01818673657", email: "amanul.hoque@iiuc.ac.bd", room: "Room 405, Lab Wing B", type: "Regular", status: "Active", experience: "5 Years", subjects: ["C++ Programming", "Data Structures"], desc: "Expert algorithm designer with active student support cycles." },
+            { id: "ts", name: "Ms Tania Sultana", designation: "Lecturer", short: "TS", mobile: "01515284723", email: "tania@iiuc.ac.bd", room: "Room 406, Academic Building 3", type: "Regular", status: "Active", experience: "4 Years", subjects: ["VLSI Design", "Electronic Circuits"], desc: "Focuses on semiconductor chip packaging and low power design." },
+            { id: "hj", name: "Engr. Hassan Jaki", designation: "Lecturer", short: "HJ", mobile: "01825362202", email: "hassan.jaki@iiuc.ac.bd", room: "Room 407, CCE Academic Building 3", type: "Regular", status: "Active", experience: "4 Years", subjects: ["Information Theory", "Communication Systems"], desc: "Enjoys exploring packet transmission techniques." },
+            { id: "jn", name: "Ms Jannatul Naima", designation: "Lecturer", short: "JN", mobile: "01624924499", email: "naima@iiuc.ac.bd", room: "Room 408, Lab Wing A", type: "Regular", status: "In Consultation", experience: "3 Years", subjects: ["Computer Networks", "Network Security"], desc: "Works with modern cryptography systems design." },
+            { id: "hm", name: "Md. Hasan Mia", designation: "Lecturer", short: "HM", mobile: "01787917221", email: "hasan.mia@iiuc.ac.bd", room: "Room 410, Lab Wing B", type: "Regular", status: "Active", experience: "3 Years", subjects: ["Databases", "Web Engineering"], desc: "Enjoys developing modern high-availability database setups." },
+            { id: "mr", name: "Mr Mirza Raquib", designation: "Lecturer", short: "MR", mobile: "01319034382", email: "raquib@iiuc.ac.bd", room: "Room 411, Academic Building 3", type: "Regular", status: "Active", experience: "2.5 Years", subjects: ["Signal Analysis", "Digital Electronics"], desc: "Works on Fourier transformation optimizations." },
+            { id: "aj", name: "Atia Jahan", designation: "Lecturer", short: "AJ", mobile: "01400388302", email: "atia.jahan@iiuc.ac.bd", room: "Room 412, Academic Building 3", type: "Regular", status: "Active", experience: "2 Years", subjects: ["Mathematics", "Numerical Methods"], desc: "Explores linear algebraic models for engineering solutions." },
+            { id: "ncs", name: "Md Nurnobi Chowdhury Saddam", designation: "Lecturer", short: "NCS", mobile: "01558268715", email: "saddam@iiuc.ac.bd", room: "Room 413, Academic Building 3", type: "Regular", status: "Away", experience: "2 Years", subjects: ["Telecommunication Systems", "RF Engineering"], desc: "Interested in RF signal processing." },
+            { id: "aam", name: "Mr Abdullah Al Masud", designation: "Lecturer", short: "AAM", mobile: "01719801221", email: "almasud@iiuc.ac.bd", room: "Room 414, Academic Building 3", type: "Regular", status: "Active", experience: "1.5 Years", subjects: ["Digital Logic Design", "HDL Programming"], desc: "Active FPGA programmer and robotics coordinator." },
+            { id: "iuf", name: "Md. Imam Uddin Forkan", designation: "Lecturer", short: "IUF", mobile: "01521536448", email: "forkan@iiuc.ac.bd", room: "Room 415, Lab Wing C", type: "Regular", status: "In Consultation", experience: "1 Year", subjects: ["Embedded Microcontrollers", "Arduino Hardware"], desc: "Enjoys organizing student hackathons and IoT workshops." },
+
+            // Adjunct Faculty members with highly rich attributes
+            { id: "dmah", name: "Dr. Md. Azad Hossain", designation: "Professor, ETE, CUET", short: "DMAH", mobile: "01783756981", email: "azad@cuet.ac.bd", room: "CUET Campus / Guest Room IIUC", type: "Adjunct", status: "Active", experience: "20 Years", subjects: ["Advanced Telecoms", "Satellite Network Topology"], desc: "Renowned expert across deep space telemetry configurations." },
+            { id: "dmji", name: "Dr. Md. Jahedul Islam", designation: "Professor, ETE, CUET", short: "DMJI", mobile: "01792451681", email: "jahedul@cuet.ac.bd", room: "CUET Campus", type: "Adjunct", status: "Away", experience: "18 Years", subjects: ["Optical Wireless communication", "Li-Fi Devices"], desc: "Pioneering visual light communication models." },
+            { id: "dmgh", name: "Dr. Md. Golam Hafez", designation: "Professor, Mathematics, CUET", short: "DMGH", mobile: "01712340602", email: "hafez@cuet.ac.bd", room: "Mathematics Block CUET", type: "Adjunct", status: "Active", experience: "22 Years", subjects: ["Vector Analysis", "Partial Equations"], desc: "Expert in complex calculus formulations." },
+            { id: "dmsi", name: "Dr. Md. Saiful Islam", designation: "Associate Professor, ETE, CUET", short: "DMSI", mobile: "01840066254", email: "saiful@cuet.ac.bd", room: "ETE Wing, CUET", type: "Adjunct", status: "Active", experience: "14 Years", subjects: ["RF circuit design", "Wave Propagation"], desc: "Researches microstrip antenna optimization configurations." },
+            { id: "mkh", name: "Md. Kamal Hossen", designation: "Associate Professor, CSE, CUET", short: "MKH", mobile: "01816012649", email: "kamal@cuet.ac.bd", room: "CSE Block, CUET", type: "Adjunct", status: "In Consultation", experience: "12 Years", subjects: ["Machine Learning", "Neural Models"], desc: "Consultant for local deep learning projects." },
+            { id: "msh", name: "Md. Shahidul Hoque", designation: "Associate Professor, CU", short: "MSH", mobile: "01818921964", email: "shahidul@cu.ac.bd", room: "Physics Dept, Chittagong University", type: "Adjunct", status: "Away", experience: "13 Years", subjects: ["Solid State Physics", "Nanotechnology"], desc: "Specializes in thin-film semiconductor coatings." },
+            { id: "mrh", name: "Md Riyad Hossain", designation: "Lecturer, EEE, UCTC", short: "MRH", mobile: "01631187291", email: "riyad@uctc.edu.bd", room: "UCTC EEE Lab", type: "Adjunct", status: "Active", experience: "4 Years", subjects: ["Control Systems Engineering", "Power Grid Analysis"], desc: "Consultant for smart-grid deployments." },
+            { id: "ma", name: "Md. Ayubali", designation: "Adjunct Faculty, CCE, IIUC", short: "MA", mobile: "01864792153", email: "ayubali@iiuc.ac.bd", room: "CCE Dept Guest Room", type: "Adjunct", status: "Active", experience: "6 Years", subjects: ["Applied Electronics", "PCB Prototyping"], desc: "Maintains strong relations with regional electronics fabricators." },
+            { id: "smi", name: "Mr. Syed Mainul Islam", designation: "Adjunct Faculty, CCE, IIUC", short: "SMI", mobile: "01521488497", email: "mainul.islam@iiuc.ac.bd", room: "CCE Office", type: "Adjunct", status: "Active", experience: "5 Years", subjects: ["Software Architecture", "Data Warehousing"], desc: "Consults on enterprise level distributed architectures." },
+            { id: "mik", name: "Mohammad Istiak Khan", designation: "Adjunct Faculty, CCE, IIUC", short: "MIK", mobile: "01625142108", email: "istiak@iiuc.ac.bd", room: "Lab Building Guest Wing", type: "Adjunct", status: "In Consultation", experience: "3 Years", subjects: ["Digital Comm Networks", "Packet Routing"], desc: "Works on enterprise routing designs." },
+            { id: "mwba", name: "Md. Warid Bin Azad", designation: "Adjunct Faculty, CCE, IIUC", short: "MWBA", mobile: "01671911645", email: "warid@iiuc.ac.bd", room: "CCE Block", type: "Adjunct", status: "Active", experience: "3 Years", subjects: ["Embedded Operating Systems", "Linux Kernel"], desc: "Advocates for open-source embedded configurations." },
+            { id: "ans", name: "Mr. Abu Noman Siddike", designation: "Adjunct Faculty, CCE, IIUC", short: "ANS", mobile: "01741270048", email: "noman.siddike@iiuc.ac.bd", room: "Guest Office Room A", type: "Adjunct", status: "Away", experience: "5 Years", subjects: ["Engineering Ethics", "Telecom Laws"], desc: "Consults regarding local telecom safety guidelines." },
+            { id: "aram", name: "Abu Raihan Anchari Miskat", designation: "Adjunct Faculty, CCE, IIUC", short: "ARAM", mobile: "01871582887", email: "miskat@iiuc.ac.bd", room: "Lab Annex Building", type: "Adjunct", status: "Active", experience: "2 Years", subjects: ["Micro-Controller logic", "Peripheral Interface"], desc: "Focuses on PIC micro-controllers implementations." },
+            { id: "zua", name: "Zia Uddin Ahmed", designation: "Adjunct Faculty, CCE, IIUC", short: "ZUA", mobile: "01670502610", email: "zia.uddin@iiuc.ac.bd", room: "CCE Block Annex", type: "Adjunct", status: "Active", experience: "3 Years", subjects: ["Statistical Models", "Discrete Math"], desc: "Conducts data modeling calculations." },
+            { id: "mabss", name: "Md Abu Bakar Siddiq Sayem", designation: "Adjunct Faculty, CCE, IIUC", short: "MABSS", mobile: "01825507837", email: "sayem@iiuc.ac.bd", room: "CCE Office", type: "Adjunct", status: "Active", experience: "2 Years", subjects: ["Broadband Communication", "IP Telephony"], desc: "Interconnect engineer with wide field deployment exposure." },
+            { id: "aaf", name: "Arafat Al Fahim", designation: "Adjunct Faculty, CCE, IIUC", short: "AAF", mobile: "01866695182", email: "fahim@iiuc.ac.bd", room: "Guest Lounge B", type: "Adjunct", status: "Active", experience: "2 Years", subjects: ["Analog Circuitry", "Oscillator Analysis"], desc: "Enjoys detailing transistor biasing fundamentals." },
+            { id: "mhs", name: "Md Hasan Shorif", designation: "Adjunct Faculty, CCE, IIUC", short: "MHS", mobile: "01858562734", email: "shorif@iiuc.ac.bd", room: "CCE Dept Wing", type: "Adjunct", status: "In Consultation", experience: "2.5 Years", subjects: ["Web API Design", "Database Sharding"], desc: "Assists junior engineers with structural queries modeling." },
+            { id: "ahi", name: "Afif Hossain Irfan", designation: "Adjunct Faculty, CCE, IIUC", short: "AHI", mobile: "01521536082", email: "irfan@iiuc.ac.bd", room: "Guest Hall Room", type: "Adjunct", status: "Active", experience: "1.5 Years", subjects: ["Microprocessors", "Logic Families"], desc: "Works closely on Boolean expression simplifiers." },
+            { id: "mar", name: "Mohammad Afjalur Rahman", designation: "Adjunct Faculty, CCE, IIUC", short: "MAR", mobile: "01716742661", email: "afjal@iiuc.ac.bd", room: "CCE Dept", type: "Adjunct", status: "Active", experience: "4 Years", subjects: ["Power Electronics", "Transformer Sizing"], desc: "Consultant for local electrical layouts modeling." },
+            { id: "mzh", name: "Md. Ziaul Hoque", designation: "Adjunct Faculty, CCE, IIUC", short: "MZH", mobile: "01518602747", email: "ziaul@iiuc.ac.bd", room: "Lab Block A", type: "Adjunct", status: "Away", experience: "2 Years", subjects: ["Data Structures", "Algorithm Analytics"], desc: "Enjoys tutoring students in binary tree mechanics." },
+            { id: "mma", name: "Md Mahmudul Arif", designation: "Adjunct Faculty, CCE, IIUC", short: "MMA", mobile: "01789077979", email: "arif@iiuc.ac.bd", room: "CCE Wing Room 204", type: "Adjunct", status: "Active", experience: "2 Years", subjects: ["Digital Logic Circuits", "State Machines"], desc: "Works on synchronous logic counters modeling." },
+            { id: "maa", name: "MD. Ali Akbar", designation: "Lecturer, CSE, GAM", short: "MAA", mobile: "01791138588", email: "ali.akbar@gam.edu.bd", room: "GAM Guest Complex", type: "Adjunct", status: "Active", experience: "5 Years", subjects: ["Compilers", "Automata Theory"], desc: "Specializes in syntax directed tree translation optimization." },
+            { id: "ammf", name: "Abu Monsur Mohammad Fahim", designation: "Software Engineering", short: "AMMF", mobile: "01821569161", email: "fahim.se@iiuc.ac.bd", room: "Academic Building 3, Lab Wing D", type: "Adjunct", status: "In Consultation", experience: "6 Years", subjects: ["Software Design Patterns", "Agile Testing"], desc: "Corporate developer teaching production practices." },
+            { id: "mi", name: "Md. Ismail", designation: "Adjunct Faculty, CSE, IIUC", short: "MI", mobile: "01690068050", email: "ismail@iiuc.ac.bd", room: "CSE Wing, Academic Building", type: "Adjunct", status: "Active", experience: "4 Years", subjects: ["Formal Languages", "Information Retrieval"], desc: "Deep knowledge in semantic parsing and lexical indexing structures." },
+            { id: "fa", name: "Farhana Ahmmed", designation: "Adjunct Faculty, CCE, IIUC", short: "FA", mobile: "01839304202", email: "farhana@iiuc.ac.bd", room: "Girls Wing Academic Annex", type: "Adjunct", status: "Active", experience: "3 Years", subjects: ["Numerical Analysis", "Basic Circuits"], desc: "Passionate academic focused on female leadership in engineering blocks." }
         ];
 
+        // Global State Parameters
         let currentTheme = 'white';
         let currentFilter = 'all';
         let searchQuery = '';
+        let favoritesList = JSON.parse(localStorage.getItem('cce_favorites')) || [];
 
-        const themes = ['white', 'dark-red', 'dark-black'];
+        // Element Bindings
         const grid = document.getElementById('teachersGrid');
         const searchInput = document.getElementById('searchInput');
-        const themeBtn = document.getElementById('themeToggle');
-        const themeIconPath = document.getElementById('iconPath');
+        const searchInputMobile = document.getElementById('searchInputMobile');
         const noResults = document.getElementById('noResults');
+        const bookmarkCountBadge = document.getElementById('bookmarkCount');
 
+        // Main Rendering Pipeline
         function render() {
+            // Apply Search & Filter criteria combined
             const filtered = facultyData.filter(item => {
-                const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                    item.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    item.short.toLowerCase().includes(searchQuery.toLowerCase());
-                const matchesType = currentFilter === 'all' || item.type === currentFilter;
+                const query = searchQuery.toLowerCase().trim();
+                const matchesSearch = 
+                    item.name.toLowerCase().includes(query) || 
+                    item.designation.toLowerCase().includes(query) ||
+                    item.short.toLowerCase().includes(query) ||
+                    item.room.toLowerCase().includes(query) ||
+                    item.mobile.includes(query) ||
+                    item.subjects.some(subj => subj.toLowerCase().includes(query));
+
+                let matchesType = false;
+                if (currentFilter === 'all') {
+                    matchesType = true;
+                } else if (currentFilter === 'Regular') {
+                    matchesType = item.type === 'Regular';
+                } else if (currentFilter === 'Adjunct') {
+                    matchesType = item.type === 'Adjunct';
+                } else if (currentFilter === 'Favorites') {
+                    matchesType = favoritesList.includes(item.id);
+                }
+
                 return matchesSearch && matchesType;
             });
 
+            // Handle Empty Search/Filter results visually
             if (filtered.length === 0) {
                 grid.innerHTML = '';
                 noResults.classList.remove('hidden');
+                document.getElementById('quickCount').textContent = "0 Teachers";
                 return;
             }
 
             noResults.classList.add('hidden');
-            grid.innerHTML = filtered.map(teacher => `
-                <div class="card rounded-2xl p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white shadow-lg ${teacher.type === 'Regular' ? 'bg-blue-600' : 'bg-purple-600'}">
-                            ${teacher.short}
+            document.getElementById('quickCount').textContent = `${filtered.length} Teachers`;
+
+            // Build grid nodes dynamically with updated action anchors and beautiful CSS variables
+            grid.innerHTML = filtered.map((teacher, index) => {
+                const isFav = favoritesList.includes(teacher.id);
+                const statColor = teacher.status === 'Active' ? 'bg-emerald-500' : (teacher.status === 'Away' ? 'bg-amber-500' : 'bg-blue-500');
+                
+                return `
+                    <div class="custom-card rounded-2xl p-5 relative overflow-hidden" data-aos="fade-up" data-aos-delay="${(index % 4) * 50}">
+                        <!-- Card Ribbon Badge and Favorite Check -->
+                        <div class="flex justify-between items-start mb-4">
+                            <!-- Circular Badge Initials -->
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-extrabold text-sm shadow-md">
+                                ${teacher.short}
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5">
+                                <!-- Bookmark/Favorite Button icon -->
+                                <button onclick="toggleFavorite('${teacher.id}')" class="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 hover:bg-yellow-100 dark:bg-slate-800 dark:hover:bg-yellow-950/40 text-yellow-500 transition-colors" title="Bookmark Teacher">
+                                    <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-star text-sm"></i>
+                                </button>
+                                <!-- Category Badge -->
+                                <span class="text-[10px] uppercase font-bold px-2 py-1 rounded bg-blue-500/10 text-blue-500 border border-blue-500/20">${teacher.type}</span>
+                            </div>
                         </div>
-                        <span class="category-badge ${teacher.type === 'Regular' ? 'bg-blue-500' : 'bg-purple-500'}">${teacher.type}</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-1 leading-tight">${teacher.name}</h3>
-                    <p class="accent-text text-sm font-semibold mb-4">${teacher.designation}</p>
-                    
-                    <div class="space-y-3 pt-4 border-t border-gray-400 border-opacity-20">
-                        <a href="tel:${teacher.mobile}" class="flex items-center gap-3 text-sm hover:underline">
-                            <svg class="w-4 h-4 accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                            ${teacher.mobile}
-                        </a>
-                        <div class="flex items-center gap-3 text-sm">
-                            <svg class="w-4 h-4 accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            CCE Dept.
+
+                        <!-- General Teacher Identity -->
+                        <h3 class="text-base font-extrabold tracking-tight mb-0.5 truncate leading-snug">${teacher.name}</h3>
+                        <p class="text-xs font-semibold text-blue-500 mb-4 truncate">${teacher.designation}</p>
+
+                        <!-- Static Office Room details -->
+                        <div class="space-y-2 mb-4 text-xs opacity-80 border-t border-gray-150 dark:border-slate-850 pt-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-building-user text-blue-500 w-4"></i>
+                                <span class="truncate">${teacher.room}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full ${statColor}"></span>
+                                <span class="font-semibold">${teacher.status}</span>
+                            </div>
+                        </div>
+
+                        <!-- Direct Dial Calling anchors -->
+                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100 dark:border-slate-800">
+                            <!-- Direct Call trigger using dialer routing -->
+                            <a href="tel:${teacher.mobile}" onclick="toastCallNotification('${teacher.name}')" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold bg-blue-500 text-white hover:bg-blue-600 transition-all text-center">
+                                <i class="fa-solid fa-phone-volume"></i> Direct Call
+                            </a>
+                            <!-- More details trigger -->
+                            <button onclick="inspectTeacherDetails('${teacher.id}')" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-all">
+                                <i class="fa-solid fa-circle-info text-blue-500"></i> Detail Info
+                            </button>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+
+            AOS.refresh();
         }
 
-        function toggleTheme() {
-            const currentIndex = themes.indexOf(currentTheme);
-            const nextIndex = (currentIndex + 1) % themes.length;
-            const nextTheme = themes[nextIndex];
-            
-            document.body.className = `theme-${nextTheme}`;
-            currentTheme = nextTheme;
+        // Theme toggler and background generator engine
+        function setTheme(themeName) {
+            document.body.className = `theme-${themeName}`;
+            currentTheme = themeName;
+            localStorage.setItem('cce_theme', themeName);
 
-            // Update Icons
-            if (nextTheme === 'white') {
-                themeIconPath.setAttribute('d', 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z');
-            } else if (nextTheme === 'dark-red') {
-                themeIconPath.setAttribute('d', 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z');
+            // Handle Glow background layers visibility dynamically
+            const glows = document.getElementById('ambientGlows');
+            if (themeName === 'glass-liquid' || themeName === 'dark-red' || themeName === 'dark-black') {
+                glows.classList.remove('hidden');
             } else {
-                themeIconPath.setAttribute('d', 'M13 10V3L4 14h7v7l9-11h-7z');
+                glows.classList.add('hidden');
             }
+
+            // Uncheck other themes, check the active one
+            const themeOpts = ['white', 'dark-red', 'dark-black', 'classic-green', 'glass-liquid'];
+            themeOpts.forEach(t => {
+                const el = document.getElementById(`check-${t}`);
+                if (el) {
+                    if (t === themeName) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+            
+            showToast(`<i class="fa-solid fa-palette text-blue-500"></i> Theme changed to <b>${themeName.replace('-', ' ')}</b>`);
         }
 
+        // Handle Quick category filters changes
         function filterCategory(cat) {
             currentFilter = cat;
             document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('border-gray-400', 'border-opacity-30');
+                btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300";
             });
-            event.target.classList.add('bg-blue-600', 'text-white');
-            event.target.classList.remove('border-gray-400', 'border-opacity-30');
+            
+            const activeBtn = document.getElementById(`btn-${cat}`);
+            if (activeBtn) {
+                if (cat === 'all') activeBtn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-blue-600 text-white";
+                else if (cat === 'Regular') activeBtn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-blue-500 text-white";
+                else if (cat === 'Adjunct') activeBtn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-purple-500 text-white";
+                else if (cat === 'Favorites') activeBtn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm bg-amber-500 text-white";
+            }
             render();
         }
 
+        // Dynamic Favorite (Starring) Logic
+        function toggleFavorite(id) {
+            const index = favoritesList.indexOf(id);
+            if (index > -1) {
+                favoritesList.splice(index, 1);
+                showToast("<i class='fa-regular fa-star text-amber-500'></i> Removed from bookmarks");
+            } else {
+                favoritesList.push(id);
+                showToast("<i class='fa-solid fa-star text-amber-500'></i> Saved to bookmarks locally!");
+            }
+            localStorage.setItem('cce_favorites', JSON.stringify(favoritesList));
+            bookmarkCountBadge.textContent = favoritesList.length;
+            render();
+        }
+
+        // Digital Clock tracker logic with dynamic elements and layout binding
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12; // conversion of 0 to 12
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            document.getElementById('clockHours').textContent = hours;
+            document.getElementById('clockMinutes').textContent = minutes;
+            document.getElementById('clockSeconds').textContent = seconds;
+            document.getElementById('clockAmPm').textContent = ampm;
+
+            // Update mini header and live date container
+            const daysArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const monthsArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            document.getElementById('widgetDateStr').textContent = `${daysArr[now.getDay()]}, ${monthsArr[now.getMonth()]} ${now.getDate()}, 2026`;
+        }
+
+        // Dynamic mini calendar generator with standard calculations
+        function buildMiniCalendar() {
+            const gridContainer = document.getElementById('miniCalendarGrid');
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+
+            // Set Title Month Year
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('calMonthYear').textContent = `${monthNames[month]} ${year}`;
+
+            // Calculate starting day and total days
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Clean previous digits and append grid headers
+            gridContainer.querySelectorAll('.cal-day').forEach(e => e.remove());
+
+            // Add blank space padding cells
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('span');
+                emptyCell.className = "cal-day opacity-0";
+                gridContainer.appendChild(emptyCell);
+            }
+
+            // Inject date cells with customized current date highlight styling
+            for (let day = 1; day <= totalDays; day++) {
+                const dayCell = document.createElement('span');
+                dayCell.className = "cal-day py-1 rounded font-medium hover:bg-blue-500/10 cursor-pointer transition-all";
+                dayCell.textContent = day;
+                if (day === now.getDate()) {
+                    dayCell.className = "cal-day py-1 rounded font-extrabold bg-blue-500 text-white shadow-md shadow-blue-500/30";
+                }
+                gridContainer.appendChild(dayCell);
+            }
+        }
+
+        // Smart Scroll Behavior Engine: Showing navbar when scrolling up, hiding on downward scroll
+        let lastScrollPosition = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const smartNav = document.getElementById('smartNav');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+            // Toggle floating return to top controls display
+            if (currentScroll > 300) {
+                scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollTopBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+
+            // Handle Smart scroll-sensitive navigation panel hide/display behavior
+            if (currentScroll > lastScrollPosition && currentScroll > 150) {
+                // Moving Down - Hide navigation completely to increase reading workspace
+                smartNav.style.transform = 'translateY(-110%)';
+            } else {
+                // Moving Up - Instantly restore active stick panel
+                smartNav.style.transform = 'translateY(0)';
+            }
+            lastScrollPosition = Math.max(0, currentScroll);
+        });
+
+        // Scroll Action Actions
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Inspect individual teachers profiles details dynamically
+        function inspectTeacherDetails(id) {
+            const t = facultyData.find(item => item.id === id);
+            if (!t) return;
+
+            const isFav = favoritesList.includes(t.id);
+            const statusLabelColor = t.status === 'Active' ? 'bg-emerald-500 text-white' : (t.status === 'Away' ? 'bg-amber-500 text-white' : 'bg-blue-500 text-white');
+
+            const placeholder = document.getElementById('modalDetailsPlaceholder');
+            placeholder.innerHTML = `
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Bio Avatar Initial -->
+                    <div class="flex-shrink-0 flex flex-col items-center">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white text-3xl font-black flex items-center justify-center shadow-xl mb-3">
+                            ${t.short}
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/10 text-blue-500">${t.type} Faculty</span>
+                    </div>
+
+                    <!-- Details Context -->
+                    <div class="flex-grow">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <h2 class="text-2xl font-black tracking-tight leading-none">${t.name}</h2>
+                            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${statusLabelColor}">${t.status}</span>
+                        </div>
+                        <p class="text-sm font-bold text-blue-500 mb-4">${t.designation}</p>
+                        
+                        <!-- Rich Bio description -->
+                        <div class="p-3.5 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-800 text-xs italic opacity-90 mb-4 leading-relaxed">
+                            "${t.desc || 'No description bio compiled for the faculty member currently.'}"
+                        </div>
+
+                        <!-- Core Attributes Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs mb-6">
+                            <div class="p-3.5 rounded-xl bg-gray-50/50 dark:bg-slate-800/30 border border-gray-100 dark:border-slate-800/50">
+                                <span class="font-extrabold text-blue-500 uppercase tracking-wider block text-[9px] mb-1">Office Room Location</span>
+                                <span class="font-medium"><i class="fa-solid fa-map-location-dot mr-1"></i> ${t.room}</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-gray-50/50 dark:bg-slate-800/30 border border-gray-100 dark:border-slate-800/50">
+                                <span class="font-extrabold text-blue-500 uppercase tracking-wider block text-[9px] mb-1">Academic Rank Experience</span>
+                                <span class="font-medium"><i class="fa-solid fa-briefcase mr-1"></i> ${t.experience} Professional</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-gray-50/50 dark:bg-slate-800/30 border border-gray-100 dark:border-slate-800/50">
+                                <span class="font-extrabold text-blue-500 uppercase tracking-wider block text-[9px] mb-1">Direct Contact Handset</span>
+                                <a href="tel:${t.mobile}" class="font-semibold text-blue-500 hover:underline block truncate"><i class="fa-solid fa-phone mr-1"></i> ${t.mobile}</a>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-gray-50/50 dark:bg-slate-800/30 border border-gray-100 dark:border-slate-800/50">
+                                <span class="font-extrabold text-blue-500 uppercase tracking-wider block text-[9px] mb-1">Official Institutional Email</span>
+                                <button onclick="copyToClipboard('${t.email}')" class="font-semibold text-blue-500 hover:underline block text-left truncate w-full"><i class="fa-solid fa-envelope mr-1"></i> ${t.email}</button>
+                            </div>
+                        </div>
+
+                        <!-- Courses/Syllabus Subjects -->
+                        <div class="mb-6">
+                            <h4 class="text-xs font-black tracking-wider uppercase text-blue-500 mb-2">Primary Teaching Course Specialties</h4>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${t.subjects.map(sub => `
+                                    <span class="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-xs font-semibold">${sub}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Panel Interactive Actions -->
+                        <div class="flex flex-wrap gap-2 border-t border-gray-100 dark:border-slate-800 pt-4">
+                            <!-- Favorite/Bookmark Button inside Modal -->
+                            <button onclick="toggleFavorite('${t.id}'); inspectTeacherDetails('${t.id}');" class="px-4 py-2.5 rounded-xl bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white border border-amber-500/20 text-xs font-bold transition-all flex items-center gap-1.5">
+                                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+                                ${isFav ? 'Starred Bookmark' : 'Save Bookmark'}
+                            </button>
+                            
+                            <!-- Export Selected vCard -->
+                            <button onclick="downloadSingleContact('${t.id}')" class="px-4 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-xs font-bold transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-invoice"></i> Download vCard
+                            </button>
+
+                            <!-- Copy Email Info -->
+                            <button onclick="copyToClipboard('${t.email}')" class="px-4 py-2.5 rounded-xl bg-blue-500 text-white hover:bg-blue-600 text-xs font-bold transition-all flex items-center gap-1.5 ml-auto">
+                                <i class="fa-solid fa-copy"></i> Copy Email
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Open Modal
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('detailModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        // Close details modal smoothly
+        function closeDetailModal() {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('detailModalContent');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150);
+        }
+
+        // vCard generator script dynamically generating raw VCF content and serving as direct download anchor
+        function downloadSingleContact(id) {
+            const t = facultyData.find(item => item.id === id);
+            if (!t) return;
+            const vcfContent = `BEGIN:VCARD\r\nVERSION:3.0\r\nN:${t.name};;;\r\nFN:${t.name}\r\nORG:International Islamic University Chittagong;CCE Department\r\nTITLE:${t.designation}\r\nTEL;TYPE=CELL:${t.mobile}\r\nEMAIL;TYPE=PREF,INTERNET:${t.email}\r\nADR;TYPE=WORK:;;${t.room};;;;\r\nEND:VCARD`;
+            triggerDownloadBlob(vcfContent, `${t.short}_Contact.vcf`, 'text/vcard');
+        }
+
+        function downloadAllContacts() {
+            let aggregatedContent = '';
+            facultyData.forEach(t => {
+                aggregatedContent += `BEGIN:VCARD\r\nVERSION:3.0\r\nN:${t.name};;;\r\nFN:${t.name}\r\nORG:International Islamic University Chittagong;CCE Department\r\nTITLE:${t.designation}\r\nTEL;TYPE=CELL:${t.mobile}\r\nEMAIL;TYPE=PREF,INTERNET:${t.email}\r\nADR;TYPE=WORK:;;${t.room};;;;\r\nEND:VCARD\r\n`;
+            });
+            triggerDownloadBlob(aggregatedContent, `IIUC_CCE_All_Faculty.vcf`, 'text/vcard');
+            showToast("<i class='fa-solid fa-file-arrow-download text-emerald-500'></i> Generated vCard file for importing to address-book");
+        }
+
+        function exportCSV() {
+            let csvContent = 'Name,Designation,Room,Mobile,Email,Type\n';
+            facultyData.forEach(t => {
+                csvContent += `"${t.name}","${t.designation}","${t.room}","${t.mobile}","${t.email}","${t.type}"\n`;
+            });
+            triggerDownloadBlob(csvContent, `IIUC_CCE_Directory.csv`, 'text/csv');
+            showToast("<i class='fa-solid fa-file-csv text-amber-500'></i> Dynamic CSV File generated and saved!");
+        }
+
+        function triggerDownloadBlob(content, filename, contentType) {
+            const blob = new Blob([content], { type: contentType + ';charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Floating toast helper routine
+        function showToast(htmlMsg) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = "flex items-center gap-3 p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xl transform translate-y-2 opacity-0 transition-all duration-300 pointer-events-auto text-xs font-semibold";
+            toast.innerHTML = htmlMsg;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+
+        function toastCallNotification(name) {
+            showToast(`<i class="fa-solid fa-phone text-blue-500 animate-bounce"></i> Routing connection to dial pad for <b>${name}</b>`);
+        }
+
+        // Copy strings utility
+        function copyToClipboard(text) {
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            showToast(`<i class="fa-solid fa-check text-emerald-500"></i> Copied: <b>${text}</b>`);
+        }
+
+        // Search Handlers & Reset Filters Helper
+        function clearSearch() {
+            searchInput.value = '';
+            searchInputMobile.value = '';
+            searchQuery = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            render();
+        }
+
+        function resetFilters() {
+            clearSearch();
+            filterCategory('all');
+        }
+
+        // Theme selector modal controls
+        function openThemeModal() {
+            const modal = document.getElementById('themeModal');
+            const content = document.getElementById('themeModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeThemeModal() {
+            const modal = document.getElementById('themeModal');
+            const content = document.getElementById('themeModalContent');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150);
+        }
+
+        // Mobile specific overlay toggles
+        function toggleMobileSearch() {
+            const panel = document.getElementById('mobileSearchPanel');
+            panel.classList.toggle('hidden');
+            if (!panel.classList.contains('hidden')) {
+                searchInputMobile.focus();
+            }
+        }
+
+        // Listeners for Inputs
         searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (searchQuery.length > 0) clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
+            render();
+        });
+
+        searchInputMobile.addEventListener('input', (e) => {
             searchQuery = e.target.value;
             render();
         });
 
-        themeBtn.addEventListener('click', toggleTheme);
+        // Close modals when user clicks outdoors
+        window.addEventListener('click', (e) => {
+            const themeModal = document.getElementById('themeModal');
+            const detailModal = document.getElementById('detailModal');
+            if (e.target === themeModal) closeThemeModal();
+            if (e.target === detailModal) closeDetailModal();
+        });
 
-        // Initial render
-        render();
+        // Initialize Application lifecycle hooks
+        window.onload = function () {
+            // Setup AOS default
+            AOS.init({
+                duration: 600,
+                once: true,
+                easing: 'ease-out-cubic'
+            });
+
+            // Initializing stats elements
+            const regCount = facultyData.filter(x => x.type === 'Regular').length;
+            const adjCount = facultyData.filter(x => x.type === 'Adjunct').length;
+            document.getElementById('totalStatsText').textContent = `Total Staff: ${facultyData.length}`;
+            document.getElementById('regStatsText').textContent = `Regular: ${regCount} / Adjunct: ${adjCount}`;
+
+            // Restore/Apply cached preferences
+            const savedTheme = localStorage.getItem('cce_theme') || 'white';
+            setTheme(savedTheme);
+
+            bookmarkCountBadge.textContent = favoritesList.length;
+
+            // Render content grids
+            render();
+
+            // Run trackers
+            setInterval(updateClock, 1000);
+            updateClock();
+            buildMiniCalendar();
+
+            // Setup welcome text greetings logic
+            const currentHour = new Date().getHours();
+            const greetElement = document.getElementById('greetingText');
+            if (currentHour < 12) greetElement.textContent = "Good Morning - CCE Department Profile Center";
+            else if (currentHour < 18) greetElement.textContent = "Good Afternoon - CCE Department Profile Center";
+            else greetElement.textContent = "Good Evening - CCE Department Profile Center";
+        };
     </script>
 </body>
 </html>
